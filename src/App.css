@@ -1,35 +1,54 @@
-body{
+body {
   margin: 0;
   font-size: 2em;
 }
 
-#root{
+#root {
   width: 100vw;
   height: 100vh;
 }
 
-.navbar{
-  display: block;
-  height: 20vh;
+.navbar {
   display: flex;
-  background-color: red;
-  margin-bottom: 60vh; /* temporary */
-}
-
-.navbar > *{
-  display: flex;
-  margin: 0;
   justify-content: center;
   align-items: center;
+  height: 20vh;
+  background-color: red;
+  margin-bottom: 0;
+  text-align: center;
+  position: relative;
 }
 
-.sidebar{
+.sidebar {
   display: flex;
 }
 
-.footer{
+.pokemonlist {
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 1px;
+  background-color: black;
+}
+
+.footer {
   width: 100vw;
   height: 20vh;
   display: block;
   background-color: white;
+}
+
+.pokemon-card {
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 16px;
+  text-align: center;
+}
+
+.pokemon-image {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto 16px;
 }
