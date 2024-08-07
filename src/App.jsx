@@ -15,3 +15,6 @@ function App() {
 }
 
 export default App
+
+
+//name, type, pokedexnr, picture, generation, (weakness), (ability), (height), (weigth), 
