@@ -17,6 +17,8 @@ body {
   margin-bottom: 0;
   text-align: center;
   position: relative;
+  transition: width 0.1s ease;
+  font-size: calc(1vw + 1vh);
 }
 
 .sidebar {
@@ -28,6 +30,7 @@ body {
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 1px;
+  font-size: calc(2vw + 2vh);
 }
 
 .footer {
@@ -85,4 +88,10 @@ body {
   border-radius: 4px;
   background-color: red;
   cursor: pointer;
+}
+
+.left-image,
+.right-image {
+  width: 12%;
+  margin-bottom: 4px;
 }

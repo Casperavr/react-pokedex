@@ -8,10 +8,10 @@ import PokemonList from "./Components/PokemonList.jsx";
 function App() {
   return (
     <>
-      <NavBar></NavBar>
-      <Sidebar></Sidebar>
+      <NavBar />
+      <Sidebar />
       <PokemonList />
-      <Footer></Footer>
+      <Footer />
     </>
   );
 }
