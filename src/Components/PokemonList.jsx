@@ -23,12 +23,23 @@ const typeColors = {
   Steel: "#B8B8D0",
   Fairy: "#EE99AC",
   Normal: "#A8A878",
-}
+};
+
+const genRanges = {
+  1: { min: 1, max: 151 },
+  2: { min: 152, max: 251 },
+  3: { min: 252, max: 386 },
+  4: { min: 387, max: 493 },
+  5: { min: 494, max: 649 },
+  6: { min: 650, max: 721 },
+  7: { min: 722, max: 809 },
+};
 
 export default function PokemonList() {
   const [pokemonList, setPokemonList] = useState(pokemonData);
+  const [filteredPokemonList, setFilteredPokemonList] = useState(pokemonData);
   const [imagePaths, setImagePaths] = useState({});
-  const [inventory, setInventory] = useState([]);
+  const [selectedGen, setSelectedGen] = useState(null);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -50,21 +61,45 @@ export default function PokemonList() {
     loadImages();
   }, []);
 
+  const filterByGeneration = (gen) => {
+    const { min, max } = genRanges[gen];
+    const filteredList = pokemonList.filter(
+      (pokemon) => pokemon.id >= min && pokemon.id <= max
+    );
+    setFilteredPokemonList(filteredList);
+    setSelectedGen(gen);
+  };
+
   const deletePokemon = (id) => {
-    setPokemonList(pokemonList.filter((pokemon) => pokemon.id !== id));
+    setFilteredPokemonList(
+      filteredPokemonList.filter((pokemon) => pokemon.id !== id)
+    );
   };
 
   return (
     <div>
-      <h1 className="pokemonlist">Pokémon List</h1>
+      <Link to={`/item/stats`}>
+        <h1 className="pokemonStats">Pokémon Stats</h1>
+      </Link>
+      <h2 className="pokemonlist">Pokémon List</h2>
+      <div className="gen-buttons">
+        {[1, 2, 3, 4, 5, 6, 7].map((gen) => (
+          <button
+            key={gen}
+            onClick={() => filterByGeneration(gen)}
+            className={selectedGen === gen ? "active" : ""}
+          >
+            GEN {gen}
+          </button>
+        ))}
+      </div>
       <div className="pokemon-container">
-        {pokemonList.map((pokemon) => {
+        {filteredPokemonList.map((pokemon) => {
           const formattedId = String(pokemon.id).padStart(3, "0");
           const imagePath =
             imagePaths[formattedId] || "/path/to/default/image.png";
 
           return (
-            
             <div key={pokemon.id} className="pokemon-card">
               <img
                 src={imagePath}
@@ -76,13 +111,13 @@ export default function PokemonList() {
               <p>
                 Type:{" "}
                 {pokemon.type.map((type) => (
-                  <span key={type} style={{ color: typeColors[type] }}> {type}</span>
+                  <span key={type} style={{ color: typeColors[type] }}>
+                    {" "}
+                    {type}
+                  </span>
                 ))}
               </p>
               <button onClick={() => deletePokemon(pokemon.id)}>Delete</button>
-              <Link to="/item/stats">
-                <button>Stats</button>
-              </Link>
             </div>
           );
         })}
