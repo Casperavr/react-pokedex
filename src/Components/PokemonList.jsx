@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import pokemonData from "../data/pokemonData.json";
 import { Link } from "react-router-dom";
+import AddNewPokemon from "./Components/AddNewPokemon.jsx";
+import UpdateForm from "./Components/UpdateForm.jsx";
 
 const imageImports = import.meta.glob("../assets/images/*.png");
 
@@ -40,6 +42,7 @@ export default function PokemonList() {
   const [filteredPokemonList, setFilteredPokemonList] = useState(pokemonData);
   const [imagePaths, setImagePaths] = useState({});
   const [selectedGen, setSelectedGen] = useState(null);
+  const [editingPokemon, setEditingPokemon] = useState(null);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -75,6 +78,14 @@ export default function PokemonList() {
       filteredPokemonList.filter((pokemon) => pokemon.id !== id)
     );
   };
+
+  const updatePokemon = { updatedPokemon } => {
+    const updatedList = filteredPokemonList.map(pokemon) =>
+      pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon
+  };
+
+  setFilteredPokemonList(updatedList);
+  setEditingPokemon(null);
 
   return (
     <div>
@@ -118,10 +129,14 @@ export default function PokemonList() {
                 ))}
               </p>
               <button onClick={() => deletePokemon(pokemon.id)}>Delete</button>
+              <button onClick={() => setEditingPokemon(pokemon)}>Edit</button>
             </div>
           );
         })}
       </div>
+      {editingPokemon && (
+        <UpdateItemForm pokemon={editingPokemon} onUpdate={updatePokemon} />
+        )}
     </div>
   );
 }

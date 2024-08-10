@@ -18,6 +18,7 @@ function App() {
   return (
     <>
         <NavBar />
+        <AddNewPokemon/>
         <Sidebar />
           <Routes>
             <Route path="/" element={<PokemonList />} />
