@@ -4,6 +4,7 @@ import Footer from "./Components/Footer.jsx";
 import NavBar from "./Components/Navbar.jsx";
 import Sidebar from "./Components/Sidebar.jsx";
 import PokemonList from "./Components/PokemonList.jsx";
+import AddNewPokemon from "./Components/AddNewPokemon.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
 import ItemDetailsPage from './Pages/ItemDetailsPage.jsx'
 import NotFoundPage from "./Pages/NotFoundPage.jsx";
