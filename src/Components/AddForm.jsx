@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const allTypes = [
   { type: "Bug", color: "#A8B820" },
@@ -19,16 +19,10 @@ const allTypes = [
   { type: "Water", color: "#6890F0" },
 ];
 
-const UpdateForm = ({ pokemon, onUpdate }) => {
+const AddForm = ({ onAdd }) => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [selectedTypes, setSelectedTypes] = useState([]);
-
-  useEffect(() => {
-    setId("");
-    setName("");
-    setSelectedTypes([]);
-  }, [pokemon]);
 
   const handleTypeChange = (type) => {
     setSelectedTypes((prevSelectedTypes) => {
@@ -54,33 +48,22 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
       return;
     }
 
-const UpdateForm = ({ pokemon, onUpdate }) => {
-  const [id, setId] = useState(pokemon.id);
-  const [name, setName] = useState(pokemon.name.english);
-  const [type, setType] = useState(pokemon.type.join(", "));
-
-  useEffect(() => {
-    setId(pokemon.id);
-    setName(pokemon.name.english);
-    setType(pokemon.type.join(", "));
-  }, [pokemon]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const updatedPokemon = {
-      ...pokemon,
+    const newPokemon = {
       id: Number(id),
-      name: { ...pokemon.name, english: name },
+      name: { english: name },
       type: selectedTypes,
-      type: type.split(",").map((t) => t.trim()),
     };
 
-    onUpdate(updatedPokemon);
+    onAdd(newPokemon);
+
+    setId("");
+    setName("");
+    setSelectedTypes([]);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h3>Update Pokémon</h3>
+      <h3>Add New Pokémon</h3>
       <div>
         <label>Id: </label>
         <input
@@ -118,16 +101,10 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
             {type}
           </label>
         ))}
-        <label>Type:</label>
-        <input
-          type="text"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        />
       </div>
-      <button type="submit">Update</button>
+      <button type="submit">Add</button>
     </form>
   );
 };
 
-export default UpdateForm;
+export default AddForm;
