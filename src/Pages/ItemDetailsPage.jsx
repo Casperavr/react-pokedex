@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import pokemonData from "../data/pokemonData.json";
-import { Link } from "react-router-dom";
+import { Link , useParams} from "react-router-dom";
+import UpdateForm from "../Components/UpdateForm";
 
 const imageImports = import.meta.glob("../assets/images/*.png");
 
@@ -19,6 +20,14 @@ export default function ItemDetailsPage() {
   const [filteredPokemonList, setFilteredPokemonList] = useState(pokemonData);
   const [imagePaths, setImagePaths] = useState({});
   const [selectedGen, setSelectedGen] = useState(null);
+  const [editingPokemon, setEditingPokemon] = useState(null);
+  const { pokemonId } = useParams();
+
+  const selectedPokemon = pokemonList.filter((pokemonObj) => {
+    return pokemonObj.id == pokemonId
+  })[0]
+  console.log(selectedPokemon)
+
 
   useEffect(() => {
     const loadImages = async () => {
@@ -55,52 +64,88 @@ export default function ItemDetailsPage() {
     );
   };
 
-  return (
-    <div>
-      <Link to={`/`}>
-        <h1 className="pokemonTypes">Pokémon Types</h1>
-      </Link>
-      <h2 className="pokemonlist">Pokémon List</h2>
-      <div className="gen-buttons">
-        {[1, 2, 3, 4, 5, 6, 7].map((gen) => (
-          <button
-            key={gen}
-            onClick={() => filterByGeneration(gen)}
-            className={selectedGen === gen ? "active" : ""}
-          >
-            GEN {gen}
-          </button>
-        ))}
-      </div>
-      <div className="pokemon-container">
-        {filteredPokemonList.map((pokemon) => {
-          const formattedId = String(pokemon.id).padStart(3, "0");
-          const imagePath =
-            imagePaths[formattedId] || "/path/to/default/image.png";
+  const updatePokemon = (updatedPokemon) => {
+    if (!filteredPokemonList) return;
+    const updatedList = filteredPokemonList.map((pokemon) =>
+      pokemon && pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon
+    );
+    setFilteredPokemonList(updatedList);
+    setEditingPokemon(null);
+  };
 
-          return (
-            <div key={pokemon.id} className="pokemon-card">
-              <img
-                src={imagePath}
-                alt={pokemon.name.english}
-                className="pokemon-image"
-              />
-              <p>Id: {formattedId}</p>
-              <h2>{pokemon.name.english}</h2>
-              <div className="pokemon-stats">
-                <p>Stats</p>
-                <p>Hp:{pokemon.base.HP}</p>
-                <p>Attack:{pokemon.base.Attack}</p>
-                <p>Defense{pokemon.base.Defense}</p>
-                <p>Sp. Attack{pokemon.base.SpAttack}</p>
-                <p>Sp. Defense{pokemon.base.SpDefense}</p>
-                <p>Speed{pokemon.base.Speed}</p>
-              </div>
-              <button onClick={() => deletePokemon(pokemon.id)}>Delete</button>
-            </div>
-          );
-        })}
+
+  const formattedId = String(pokemonId).padStart(3, "0");
+  const imagePath = imagePaths[formattedId] || "/path/to/default/image.png";
+  const typeColors = {
+    Fire: "#F08030",
+    Water: "#6890F0",
+    Grass: "#78C850",
+    Electric: "#F8D030",
+    Ice: "#98D8D8",
+    Fighting: "#C03028",
+    Poison: "#A040A0",
+    Ground: "#E0C068",
+    Flying: "#A890F0",
+    Psychic: "#F85888",
+    Bug: "#A8B820",
+    Rock: "#B8A038",
+    Ghost: "#705898",
+    Dragon: "#7038F8",
+    Dark: "#705848",
+    Steel: "#B8B8D0",
+    Fairy: "#EE99AC",
+    Normal: "#A8A878",
+  };
+
+  return (
+    <div className="pokemon-detail-page">
+
+      <h2 className="pokemon-title">{formattedId} - {selectedPokemon.name.english}</h2>
+
+
+      <img
+        src={imagePath}
+        alt={selectedPokemon.name.english}
+        className="pokemon-image"
+      />
+
+      <p>
+        Type:{" "}
+        {selectedPokemon.type.map((type) => (
+          <span key={type} style={{ color: typeColors[type] }}>
+            {" "}
+            {type}
+          </span>
+        ))}
+      </p>
+    	
+      <div className="pokemon-stats">
+        <p>Stats</p>
+        <p>Hp:{selectedPokemon.base.HP}</p>
+        <p>Attack:{selectedPokemon.base.Attack}</p>
+        <p>Defense{selectedPokemon.base.Defense}</p>
+        <p>Sp. Attack{selectedPokemon.base.SpAttack}</p>
+        <p>Sp. Defense{selectedPokemon.base.SpDefense}</p>
+        <p>Speed{selectedPokemon.base.Speed}</p>
       </div>
+
+
+      {editingPokemon && (
+        <UpdateForm pokemon={editingPokemon} onUpdate={updatePokemon} />
+      )}
+
+      <button
+          className="edit-pokemon-button"
+          onClick={() => setEditingPokemon(filteredPokemonList[0])}
+      >
+          Edit Pokémon
+      </button>
+
+
+
+      
+      <Link to="/"><button>Back to Home</button></Link>
+
     </div>
   );
 }

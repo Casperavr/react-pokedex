@@ -18,12 +18,12 @@ function App() {
   return (
     <>
         <NavBar />
-        <AddNewPokemon/>
+        {/* <AddNewPokemon/> */}
         <Sidebar />
           <Routes>
             <Route path="/" element={<PokemonList />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/item/stats" element={<ItemDetailsPage />} />
+            <Route path="/stats/:pokemonId" element={<ItemDetailsPage />} />
             <Route path="/*" element={<NotFoundPage />} />
           </Routes>
         <Footer />
