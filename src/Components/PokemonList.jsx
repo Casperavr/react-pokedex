@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import UpdateForm from "../Components/UpdateForm.jsx";
 import AddForm from "../Components/AddForm.jsx";
 
+
 const imageImports = import.meta.glob("../assets/images/*.png");
 
 const typeColors = {
@@ -97,7 +98,7 @@ export default function PokemonList() {
     setFilteredPokemonList(updatedList);
     setAddingPokemon(false);
   };
-
+  
   return (
     <div>
       <Link to={`/item/stats`}>
@@ -133,6 +134,15 @@ export default function PokemonList() {
         <UpdateForm pokemon={editingPokemon} onUpdate={updatePokemon} />
       )}
       {addingPokemon && <AddForm onAdd={addPokemon} />}
+      <button
+        className="edit-pokemon-button"
+        onClick={() => setEditingPokemon(filteredPokemonList[0])}
+      >
+        Edit Pokémon
+      </button>
+      {editingPokemon && (
+        <UpdateForm pokemon={editingPokemon} onUpdate={updatePokemon} />
+      )}
       <div className="pokemon-container">
         {Array.isArray(filteredPokemonList) &&
           filteredPokemonList.map((pokemon) => {
