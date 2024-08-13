@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import pokemonData from "../data/pokemonData.json";
 import { Link } from "react-router-dom";
+import UpdateForm from "../Components/UpdateForm.jsx";
+import AddForm from "../Components/AddForm.jsx";
 
 const imageImports = import.meta.glob("../assets/images/*.png");
 
@@ -37,9 +39,13 @@ const genRanges = {
 
 export default function PokemonList() {
   const [pokemonList, setPokemonList] = useState(pokemonData);
-  const [filteredPokemonList, setFilteredPokemonList] = useState(pokemonData);
+  const [filteredPokemonList, setFilteredPokemonList] = useState(
+    pokemonData || []
+  );
   const [imagePaths, setImagePaths] = useState({});
   const [selectedGen, setSelectedGen] = useState(null);
+  const [editingPokemon, setEditingPokemon] = useState(null);
+  const [addingPokemon, setAddingPokemon] = useState(false);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -76,6 +82,22 @@ export default function PokemonList() {
     );
   };
 
+  const updatePokemon = (updatedPokemon) => {
+    if (!filteredPokemonList) return;
+    const updatedList = filteredPokemonList.map((pokemon) =>
+      pokemon && pokemon.id === updatedPokemon.id ? updatedPokemon : pokemon
+    );
+    setFilteredPokemonList(updatedList);
+    setEditingPokemon(null);
+  };
+
+  const addPokemon = (newPokemon) => {
+    const updatedList = [...pokemonList, newPokemon];
+    setPokemonList(updatedList);
+    setFilteredPokemonList(updatedList);
+    setAddingPokemon(false);
+  };
+
   return (
     <div>
       <Link to={`/item/stats`}>
@@ -93,34 +115,56 @@ export default function PokemonList() {
           </button>
         ))}
       </div>
+      <div className="addedit-container">
+        <button
+          className="edit-pokemon-button"
+          onClick={() => setEditingPokemon(filteredPokemonList[0])}
+        >
+          Edit Pokémon
+        </button>
+        <button
+          className="add-pokemon-button"
+          onClick={() => setAddingPokemon(true)}
+        >
+          Add Pokémon
+        </button>
+      </div>
+      {editingPokemon && (
+        <UpdateForm pokemon={editingPokemon} onUpdate={updatePokemon} />
+      )}
+      {addingPokemon && <AddForm onAdd={addPokemon} />}
       <div className="pokemon-container">
-        {filteredPokemonList.map((pokemon) => {
-          const formattedId = String(pokemon.id).padStart(3, "0");
-          const imagePath =
-            imagePaths[formattedId] || "/path/to/default/image.png";
+        {Array.isArray(filteredPokemonList) &&
+          filteredPokemonList.map((pokemon) => {
+            if (!pokemon) return null;
+            const formattedId = String(pokemon.id).padStart(3, "0");
+            const imagePath =
+              imagePaths[formattedId] || "/path/to/default/image.png";
 
-          return (
-            <div key={pokemon.id} className="pokemon-card">
-              <img
-                src={imagePath}
-                alt={pokemon.name.english}
-                className="pokemon-image"
-              />
-              <p>Id: {formattedId}</p>
-              <h2>{pokemon.name.english}</h2>
-              <p>
-                Type:{" "}
-                {pokemon.type.map((type) => (
-                  <span key={type} style={{ color: typeColors[type] }}>
-                    {" "}
-                    {type}
-                  </span>
-                ))}
-              </p>
-              <button onClick={() => deletePokemon(pokemon.id)}>Delete</button>
-            </div>
-          );
-        })}
+            return (
+              <div key={pokemon.id} className="pokemon-card">
+                <img
+                  src={imagePath}
+                  alt={pokemon.name.english}
+                  className="pokemon-image"
+                />
+                <p>Id: {formattedId}</p>
+                <h2>{pokemon.name.english}</h2>
+                <p>
+                  Type:{" "}
+                  {pokemon.type.map((type) => (
+                    <span key={type} style={{ color: typeColors[type] }}>
+                      {" "}
+                      {type}
+                    </span>
+                  ))}
+                </p>
+                <button onClick={() => deletePokemon(pokemon.id)}>
+                  Delete
+                </button>
+              </div>
+            );
+          })}
       </div>
     </div>
   );
