@@ -27,7 +27,6 @@ export default function ItemDetailsPage({pokemonList, setPokemonList, filteredPo
     })[0]
     )
   }, [])
-  console.log(selectedPokemon)
 
 
 
@@ -52,9 +51,9 @@ export default function ItemDetailsPage({pokemonList, setPokemonList, filteredPo
   }, []);
 
 
-  const deletePokemon = (id) => {
+  const deletePokemon = (id) => {    
     setFilteredPokemonList(
-      filteredPokemonList.filter((pokemon) => pokemon.id !== id)
+      filteredPokemonList.filter((pokemon) => pokemon.id != id)
     );
   };
 
@@ -142,9 +141,11 @@ export default function ItemDetailsPage({pokemonList, setPokemonList, filteredPo
           </button>
         }
 
-        <button className="detail-delete-button" onClick={() => deletePokemon(pokemonId)}>
-          Delete
-        </button>
+        <Link to="/">
+          <button className="detail-delete-button" onClick={() => deletePokemon(pokemonId)}>
+            Delete
+          </button>
+        </Link>
 
 
         <Link to="/">

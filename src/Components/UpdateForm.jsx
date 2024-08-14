@@ -20,15 +20,17 @@ const allTypes = [
 ];
 
 const UpdateForm = ({ pokemon, onUpdate, setSelectedPokemon }) => {
-  const [id, setId] = useState("");
-  const [name, setName] = useState("");
-  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [id, setId] = useState(pokemon.id);
+  const [name, setName] = useState(pokemon.name.english);
+  const [selectedTypes, setSelectedTypes] = useState(pokemon.type);
 
-  useEffect(() => {
-    setId("");
-    setName("");
-    setSelectedTypes([]);
-  }, [pokemon]);
+  // useEffect(() => {
+  //   setId("");
+  //   setName("");
+  //   setSelectedTypes([]);
+  // }, [pokemon]);
+
+  
 
   const handleTypeChange = (type) => {
     setSelectedTypes((prevSelectedTypes) => {
@@ -44,22 +46,32 @@ const UpdateForm = ({ pokemon, onUpdate, setSelectedPokemon }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    
+  console.log(pokemon);
+    
+    if(!id || id.length === 0){
+      setId(pokemon.id)
+    }
+    
     if (!name || name.trim().length === 0) {
-      alert("Please enter a valid name");
-      return;
+      // alert("Please enter a valid name");
+      setName(pokemon.name.english)
     }
-
+    
     if (selectedTypes.length === 0 || selectedTypes.length > 2) {
-      alert("Please select 1-2 types");
-      return;
+      // alert("Please select 1-2 types");
+      setSelectedTypes(pokemon.type)
     }
-
+    console.log(pokemon)
+    console.log(id, name, selectedTypes);
+    
     const updatedPokemon = {
       ...pokemon,
       id: Number(id),
       name: { ...pokemon.name, english: name },
       type: selectedTypes,
     };
+
 
     setSelectedPokemon(updatedPokemon)
     onUpdate(updatedPokemon);
