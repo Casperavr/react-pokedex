@@ -101,7 +101,6 @@ export default function ItemDetailsPage({pokemonList, setPokemonList, filteredPo
           <img
             src={imagePath}
             alt={selectedPokemon.name.english}
-            className="pokemon-image"
           />
 
           <p>
@@ -116,13 +115,13 @@ export default function ItemDetailsPage({pokemonList, setPokemonList, filteredPo
         </div>
         
         <div className="pokemon-details-stats">
-          <p>Stats</p>
-          <p>Hp:{selectedPokemon.base.HP}</p>
-          <p>Attack:{selectedPokemon.base.Attack}</p>
-          <p>Defense{selectedPokemon.base.Defense}</p>
-          <p>Sp. Attack{selectedPokemon.base.SpAttack}</p>
-          <p>Sp. Defense{selectedPokemon.base.SpDefense}</p>
-          <p>Speed{selectedPokemon.base.Speed}</p>
+          <p style={{fontSize:"1.42em"}}>Stats</p>
+          <p>Hp: {selectedPokemon.base.HP}</p>
+          <p>Attack: {selectedPokemon.base.Attack}</p>
+          <p>Defense: {selectedPokemon.base.Defense}</p>
+          <p>Sp. Attack: {selectedPokemon.base.SpAttack}</p>
+          <p>Sp. Defense: {selectedPokemon.base.SpDefense}</p>
+          <p>Speed: {selectedPokemon.base.Speed}</p>
         </div>
       </>}
 

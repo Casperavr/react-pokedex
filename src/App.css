@@ -82,7 +82,7 @@ body {
   margin: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: calc(12% - 32px);
+  width: calc(16% - 32px);
   box-sizing: border-box;
 }
 
@@ -161,6 +161,22 @@ body {
   color: red
 }
 
+
+.pokemondetails{
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemondetails img{
+  padding: 20px;
+  border: 2px solid grey;
+  background-color: grey;
+}
+
+.pokemondetails p{
+  text-align: center;
+}
+
 .pokemon-detail-page{
   width: 98vw;
   display: flex;
@@ -180,6 +196,9 @@ body {
 }
 
 .pokemon-details-stats{
-  width: 40vw;
+  width: 35vw;
+  padding: 0 20px;
 }
+
+
 
