@@ -19,8 +19,7 @@ const allTypes = [
   { type: "Water", color: "#6890F0" },
 ];
 
-const AddForm = ({ onAdd }) => {
-  const [id, setId] = useState("");
+const AddForm = ({ onAdd, nextId }) => {
   const [name, setName] = useState("");
   const [selectedTypes, setSelectedTypes] = useState([]);
 
@@ -49,14 +48,13 @@ const AddForm = ({ onAdd }) => {
     }
 
     const newPokemon = {
-      id: Number(id),
+      id: nextId,
       name: { english: name },
       type: selectedTypes,
     };
 
     onAdd(newPokemon);
 
-    setId("");
     setName("");
     setSelectedTypes([]);
   };
@@ -65,14 +63,8 @@ const AddForm = ({ onAdd }) => {
     <form onSubmit={handleSubmit}>
       <h3>Add New Pokémon</h3>
       <div>
-        <label>Id: </label>
-        <input
-          type="number"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-          min="1"
-          step="1"
-        />
+        <label>Id: {nextId}</label>
+        <input type="hidden" value={nextId} />
       </div>
       <div>
         <label>Name: </label>

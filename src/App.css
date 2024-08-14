@@ -82,7 +82,7 @@ body {
   margin: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  width: calc(12% - 32px);
+  width: calc(16% - 32px);
   box-sizing: border-box;
 }
 
@@ -142,7 +142,8 @@ body {
 }
 
 .edit-pokemon-button,
-.add-pokemon-button {
+.add-pokemon-button,
+.detail-delete-button {
   margin-top: 10px;
   margin-left: 10px;
   padding: 10px 20px;
@@ -154,7 +155,50 @@ body {
 }
 
 .edit-pokemon-button:hover,
-.add-pokemon-button:hover {
+.add-pokemon-button:hover,
+.detail-delete-button:hover {
   background-color: white;
   color: red
 }
+
+
+.pokemondetails{
+  display: flex;
+  flex-direction: column;
+}
+
+.pokemondetails img{
+  padding: 20px;
+  border: 2px solid grey;
+  background-color: grey;
+}
+
+.pokemondetails p{
+  text-align: center;
+}
+
+.pokemon-detail-page{
+  width: 98vw;
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+
+}
+
+.buttons-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttons-container *{
+  margin: 10px 0;
+}
+
+.pokemon-details-stats{
+  width: 35vw;
+  padding: 0 20px;
+}
+
+
+

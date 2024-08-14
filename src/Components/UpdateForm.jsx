@@ -19,16 +19,18 @@ const allTypes = [
   { type: "Water", color: "#6890F0" },
 ];
 
-const UpdateForm = ({ pokemon, onUpdate }) => {
-  const [id, setId] = useState("");
-  const [name, setName] = useState("");
-  const [selectedTypes, setSelectedTypes] = useState([]);
+const UpdateForm = ({ pokemon, onUpdate, setSelectedPokemon }) => {
+  const [id, setId] = useState(pokemon.id);
+  const [name, setName] = useState(pokemon.name.english);
+  const [selectedTypes, setSelectedTypes] = useState(pokemon.type);
 
-  useEffect(() => {
-    setId("");
-    setName("");
-    setSelectedTypes([]);
-  }, [pokemon]);
+  // useEffect(() => {
+  //   setId("");
+  //   setName("");
+  //   setSelectedTypes([]);
+  // }, [pokemon]);
+
+  
 
   const handleTypeChange = (type) => {
     setSelectedTypes((prevSelectedTypes) => {
@@ -44,38 +46,36 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    
+  console.log(pokemon);
+    
+    if(!id || id.length === 0){
+      setId(pokemon.id)
+    }
+    
     if (!name || name.trim().length === 0) {
-      alert("Please enter a valid name");
-      return;
+      // alert("Please enter a valid name");
+      setName(pokemon.name.english)
     }
-
+    
     if (selectedTypes.length === 0 || selectedTypes.length > 2) {
-      alert("Please select 1-2 types");
-      return;
+      // alert("Please select 1-2 types");
+      setSelectedTypes(pokemon.type)
     }
-
-const UpdateForm = ({ pokemon, onUpdate }) => {
-  const [id, setId] = useState(pokemon.id);
-  const [name, setName] = useState(pokemon.name.english);
-  const [type, setType] = useState(pokemon.type.join(", "));
-
-  useEffect(() => {
-    setId(pokemon.id);
-    setName(pokemon.name.english);
-    setType(pokemon.type.join(", "));
-  }, [pokemon]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    console.log(pokemon)
+    console.log(id, name, selectedTypes);
+    
     const updatedPokemon = {
       ...pokemon,
       id: Number(id),
       name: { ...pokemon.name, english: name },
       type: selectedTypes,
-      type: type.split(",").map((t) => t.trim()),
     };
 
+
+    setSelectedPokemon(updatedPokemon)
     onUpdate(updatedPokemon);
+    
   };
 
   return (
@@ -89,6 +89,7 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
           onChange={(e) => setId(e.target.value)}
           min="1"
           step="1"
+          placeholder={pokemon.id}
         />
       </div>
       <div>
@@ -97,6 +98,7 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          placeholder={pokemon.name.english}
         />
       </div>
       <div>
@@ -118,12 +120,6 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
             {type}
           </label>
         ))}
-        <label>Type:</label>
-        <input
-          type="text"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        />
       </div>
       <button type="submit">Update</button>
     </form>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import pokemonData from "../data/pokemonData.json";
 import { Link } from "react-router-dom";
 import UpdateForm from "../Components/UpdateForm.jsx";
 import AddForm from "../Components/AddForm.jsx";
@@ -38,11 +37,7 @@ const genRanges = {
   7: { min: 722, max: 809 },
 };
 
-export default function PokemonList() {
-  const [pokemonList, setPokemonList] = useState(pokemonData);
-  const [filteredPokemonList, setFilteredPokemonList] = useState(
-    pokemonData || []
-  );
+export default function PokemonList({pokemonList, setPokemonList, filteredPokemonList, setFilteredPokemonList}) {
   const [imagePaths, setImagePaths] = useState({});
   const [selectedGen, setSelectedGen] = useState(null);
   const [editingPokemon, setEditingPokemon] = useState(null);
@@ -99,12 +94,14 @@ export default function PokemonList() {
     setAddingPokemon(false);
   };
   
+  const nextId = Math.max(...pokemonList.map((pokemon) => pokemon.id)) + 1;
+
   return (
     <div>
-      <Link to={`/item/stats`}>
-        <h1 className="pokemonStats">Pokémon Stats</h1>
-      </Link>
+
       <h2 className="pokemonlist">Pokémon List</h2>
+
+
       <div className="gen-buttons">
         {[1, 2, 3, 4, 5, 6, 7].map((gen) => (
           <button
@@ -116,13 +113,9 @@ export default function PokemonList() {
           </button>
         ))}
       </div>
+
+
       <div className="addedit-container">
-        <button
-          className="edit-pokemon-button"
-          onClick={() => setEditingPokemon(filteredPokemonList[0])}
-        >
-          Edit Pokémon
-        </button>
         <button
           className="add-pokemon-button"
           onClick={() => setAddingPokemon(true)}
@@ -130,19 +123,15 @@ export default function PokemonList() {
           Add Pokémon
         </button>
       </div>
-      {editingPokemon && (
-        <UpdateForm pokemon={editingPokemon} onUpdate={updatePokemon} />
-      )}
-      {addingPokemon && <AddForm onAdd={addPokemon} />}
-      <button
-        className="edit-pokemon-button"
-        onClick={() => setEditingPokemon(filteredPokemonList[0])}
-      >
-        Edit Pokémon
-      </button>
-      {editingPokemon && (
-        <UpdateForm pokemon={editingPokemon} onUpdate={updatePokemon} />
-      )}
+
+
+
+      {addingPokemon && <AddForm onAdd={addPokemon} nextId={nextId}/>}
+
+      
+
+
+
       <div className="pokemon-container">
         {Array.isArray(filteredPokemonList) &&
           filteredPokemonList.map((pokemon) => {
@@ -153,25 +142,28 @@ export default function PokemonList() {
 
             return (
               <div key={pokemon.id} className="pokemon-card">
-                <img
-                  src={imagePath}
-                  alt={pokemon.name.english}
-                  className="pokemon-image"
-                />
-                <p>Id: {formattedId}</p>
-                <h2>{pokemon.name.english}</h2>
-                <p>
-                  Type:{" "}
-                  {pokemon.type.map((type) => (
-                    <span key={type} style={{ color: typeColors[type] }}>
-                      {" "}
-                      {type}
-                    </span>
-                  ))}
-                </p>
-                <button onClick={() => deletePokemon(pokemon.id)}>
-                  Delete
-                </button>
+                <Link to={`/stats/${pokemon.id}`}>
+                  <img
+                    src={imagePath}
+                    alt={pokemon.name.english}
+                    className="pokemon-image"
+                  />
+                  <p>Id: {formattedId}</p>
+                  <h2>{pokemon.name.english}</h2>
+                </Link>
+
+                  <p>
+                    Type:{" "}
+                    {pokemon.type.map((type) => (
+                      <span key={type} style={{ color: typeColors[type] }}>
+                        {" "}
+                        {type}
+                      </span>
+                    ))}
+                  </p>
+                  <button onClick={() => deletePokemon(pokemon.id)}>
+                    Delete
+                  </button>
               </div>
             );
           })}

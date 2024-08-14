@@ -13,18 +13,36 @@ import pokemonData from "./data/pokemonData.json";
 
 function App() {
   const [pokemonList, setPokemonList] = useState(pokemonData);
+  const [filteredPokemonList, setFilteredPokemonList] = useState(pokemonData);
   const [imagePaths, setImagePaths] = useState({});
+  
 
   return (
     <>
         <NavBar />
-        <AddNewPokemon/>
+        {/* <AddNewPokemon/> */}
         <Sidebar />
           <Routes>
-            <Route path="/" element={<PokemonList />} />
+            <Route path="/" element={<PokemonList 
+              pokemonList={pokemonList} 
+              setPokemonList={setPokemonList} 
+              filteredPokemonList={filteredPokemonList} 
+              setFilteredPokemonList={setFilteredPokemonList}
+              />} 
+            />
+
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/item/stats" element={<ItemDetailsPage />} />
+
+            <Route path="/stats/:pokemonId" element={<ItemDetailsPage 
+              pokemonList={pokemonList} 
+              setPokemonList={setPokemonList} 
+              filteredPokemonList={filteredPokemonList} 
+              setFilteredPokemonList={setFilteredPokemonList}
+              />} 
+            />
+            
             <Route path="/*" element={<NotFoundPage />} />
+
           </Routes>
         <Footer />
     </>
