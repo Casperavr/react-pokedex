@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import pokemonData from "../data/pokemonData.json";
 import { Link , useParams} from "react-router-dom";
 import UpdateForm from "../Components/UpdateForm";
 
@@ -15,18 +14,21 @@ const genRanges = {
   7: { min: 722, max: 809 },
 };
 
-export default function ItemDetailsPage() {
-  const [pokemonList, setPokemonList] = useState(pokemonData);
-  const [filteredPokemonList, setFilteredPokemonList] = useState(pokemonData);
+export default function ItemDetailsPage({pokemonList, setPokemonList, filteredPokemonList, setFilteredPokemonList}) {
   const [imagePaths, setImagePaths] = useState({});
-  const [selectedGen, setSelectedGen] = useState(null);
   const [editingPokemon, setEditingPokemon] = useState(null);
+  const [ selectedPokemon, setSelectedPokemon] = useState();
   const { pokemonId } = useParams();
 
-  const selectedPokemon = pokemonList.filter((pokemonObj) => {
-    return pokemonObj.id == pokemonId
-  })[0]
+  
+  useEffect(() => {
+    setSelectedPokemon(pokemonList.filter((pokemonObj) => {
+      return pokemonObj.id == pokemonId
+    })[0]
+    )
+  }, [])
   console.log(selectedPokemon)
+
 
 
   useEffect(() => {
@@ -49,14 +51,6 @@ export default function ItemDetailsPage() {
     loadImages();
   }, []);
 
-  const filterByGeneration = (gen) => {
-    const { min, max } = genRanges[gen];
-    const filteredList = pokemonList.filter(
-      (pokemon) => pokemon.id >= min && pokemon.id <= max
-    );
-    setFilteredPokemonList(filteredList);
-    setSelectedGen(gen);
-  };
 
   const deletePokemon = (id) => {
     setFilteredPokemonList(
@@ -98,54 +92,66 @@ export default function ItemDetailsPage() {
   };
 
   return (
-    <div className="pokemon-detail-page">
+    <section className="pokemon-detail-page">
 
-      <h2 className="pokemon-title">{formattedId} - {selectedPokemon.name.english}</h2>
+      {selectedPokemon && <>
+        <div className="pokemondetails">
+          <h2 className="pokemon-title">{formattedId} - {selectedPokemon.name.english}</h2>
 
 
-      <img
-        src={imagePath}
-        alt={selectedPokemon.name.english}
-        className="pokemon-image"
-      />
+          <img
+            src={imagePath}
+            alt={selectedPokemon.name.english}
+            className="pokemon-image"
+          />
 
-      <p>
-        Type:{" "}
-        {selectedPokemon.type.map((type) => (
-          <span key={type} style={{ color: typeColors[type] }}>
-            {" "}
-            {type}
-          </span>
-        ))}
-      </p>
-    	
-      <div className="pokemon-stats">
-        <p>Stats</p>
-        <p>Hp:{selectedPokemon.base.HP}</p>
-        <p>Attack:{selectedPokemon.base.Attack}</p>
-        <p>Defense{selectedPokemon.base.Defense}</p>
-        <p>Sp. Attack{selectedPokemon.base.SpAttack}</p>
-        <p>Sp. Defense{selectedPokemon.base.SpDefense}</p>
-        <p>Speed{selectedPokemon.base.Speed}</p>
+          <p>
+            Type:{" "}
+            {selectedPokemon.type.map((type) => (
+              <span key={type} style={{ color: typeColors[type] }}>
+                {" "}
+                {type}
+              </span>
+            ))}
+          </p>
+        </div>
+        
+        <div className="pokemon-details-stats">
+          <p>Stats</p>
+          <p>Hp:{selectedPokemon.base.HP}</p>
+          <p>Attack:{selectedPokemon.base.Attack}</p>
+          <p>Defense{selectedPokemon.base.Defense}</p>
+          <p>Sp. Attack{selectedPokemon.base.SpAttack}</p>
+          <p>Sp. Defense{selectedPokemon.base.SpDefense}</p>
+          <p>Speed{selectedPokemon.base.Speed}</p>
+        </div>
+      </>}
+
+
+      <div className="buttons-container">
+        {editingPokemon && (
+          <UpdateForm setSelectedPokemon={setSelectedPokemon} pokemon={editingPokemon} onUpdate={updatePokemon} />
+        )}
+          
+        {!editingPokemon && 
+          <button
+              className="edit-pokemon-button"
+              onClick={() => setEditingPokemon(selectedPokemon)}
+          >
+              Edit Pokémon
+          </button>
+        }
+
+        <button className="detail-delete-button" onClick={() => deletePokemon(pokemonId)}>
+          Delete
+        </button>
+
+
+        <Link to="/">
+          <button>Back to Home</button>
+        </Link>
       </div>
 
-
-      {editingPokemon && (
-        <UpdateForm pokemon={editingPokemon} onUpdate={updatePokemon} />
-      )}
-
-      <button
-          className="edit-pokemon-button"
-          onClick={() => setEditingPokemon(filteredPokemonList[0])}
-      >
-          Edit Pokémon
-      </button>
-
-
-
-      
-      <Link to="/"><button>Back to Home</button></Link>
-
-    </div>
+    </section>
   );
 }

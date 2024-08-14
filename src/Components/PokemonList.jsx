@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import pokemonData from "../data/pokemonData.json";
 import { Link } from "react-router-dom";
 import UpdateForm from "../Components/UpdateForm.jsx";
 import AddForm from "../Components/AddForm.jsx";
@@ -38,9 +37,7 @@ const genRanges = {
   7: { min: 722, max: 809 },
 };
 
-export default function PokemonList() {
-  const [pokemonList, setPokemonList] = useState(pokemonData);
-  const [filteredPokemonList, setFilteredPokemonList] = useState(pokemonData);
+export default function PokemonList({pokemonList, setPokemonList, filteredPokemonList, setFilteredPokemonList}) {
   const [imagePaths, setImagePaths] = useState({});
   const [selectedGen, setSelectedGen] = useState(null);
   const [editingPokemon, setEditingPokemon] = useState(null);
@@ -120,14 +117,6 @@ export default function PokemonList() {
 
       <div className="addedit-container">
         <button
-          className="edit-pokemon-button"
-          onClick={() => setEditingPokemon(filteredPokemonList[0])}
-        >
-          Edit Pokémon
-        </button>
-
-
-        <button
           className="add-pokemon-button"
           onClick={() => setAddingPokemon(true)}
         >
@@ -135,11 +124,6 @@ export default function PokemonList() {
         </button>
       </div>
 
-
-
-      {editingPokemon && (
-        <UpdateForm pokemon={editingPokemon} onUpdate={updatePokemon} />
-      )}
 
 
       {addingPokemon && <AddForm onAdd={addPokemon} nextId={nextId}/>}

@@ -19,7 +19,7 @@ const allTypes = [
   { type: "Water", color: "#6890F0" },
 ];
 
-const UpdateForm = ({ pokemon, onUpdate }) => {
+const UpdateForm = ({ pokemon, onUpdate, setSelectedPokemon }) => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [selectedTypes, setSelectedTypes] = useState([]);
@@ -61,7 +61,9 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
       type: selectedTypes,
     };
 
+    setSelectedPokemon(updatedPokemon)
     onUpdate(updatedPokemon);
+    
   };
 
   return (
@@ -75,6 +77,7 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
           onChange={(e) => setId(e.target.value)}
           min="1"
           step="1"
+          placeholder={pokemon.id}
         />
       </div>
       <div>
@@ -83,6 +86,7 @@ const UpdateForm = ({ pokemon, onUpdate }) => {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          placeholder={pokemon.name.english}
         />
       </div>
       <div>
