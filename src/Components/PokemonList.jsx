@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import UpdateForm from "../Components/UpdateForm.jsx";
 import AddForm from "../Components/AddForm.jsx";
 
-
 const imageImports = import.meta.glob("../assets/images/*.png");
 
 const typeColors = {
@@ -35,9 +34,15 @@ const genRanges = {
   5: { min: 494, max: 649 },
   6: { min: 650, max: 721 },
   7: { min: 722, max: 809 },
+  8: { min: 810, max: 898 },
 };
 
-export default function PokemonList({pokemonList, setPokemonList, filteredPokemonList, setFilteredPokemonList}) {
+export default function PokemonList({
+  pokemonList,
+  setPokemonList,
+  filteredPokemonList,
+  setFilteredPokemonList,
+}) {
   const [imagePaths, setImagePaths] = useState({});
   const [selectedGen, setSelectedGen] = useState(null);
   const [editingPokemon, setEditingPokemon] = useState(null);
@@ -93,17 +98,15 @@ export default function PokemonList({pokemonList, setPokemonList, filteredPokemo
     setFilteredPokemonList(updatedList);
     setAddingPokemon(false);
   };
-  
+
   const nextId = Math.max(...pokemonList.map((pokemon) => pokemon.id)) + 1;
 
   return (
     <div>
-
       <h2 className="pokemonlist">Pokémon List</h2>
 
-
       <div className="gen-buttons">
-        {[1, 2, 3, 4, 5, 6, 7].map((gen) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((gen) => (
           <button
             key={gen}
             onClick={() => filterByGeneration(gen)}
@@ -114,7 +117,6 @@ export default function PokemonList({pokemonList, setPokemonList, filteredPokemo
         ))}
       </div>
 
-
       <div className="addedit-container">
         <button
           className="add-pokemon-button"
@@ -124,13 +126,7 @@ export default function PokemonList({pokemonList, setPokemonList, filteredPokemo
         </button>
       </div>
 
-
-
-      {addingPokemon && <AddForm onAdd={addPokemon} nextId={nextId}/>}
-
-      
-
-
+      {addingPokemon && <AddForm onAdd={addPokemon} nextId={nextId} />}
 
       <div className="pokemon-container">
         {Array.isArray(filteredPokemonList) &&
@@ -152,18 +148,18 @@ export default function PokemonList({pokemonList, setPokemonList, filteredPokemo
                   <h2>{pokemon.name.english}</h2>
                 </Link>
 
-                  <p>
-                    Type:{" "}
-                    {pokemon.type.map((type) => (
-                      <span key={type} style={{ color: typeColors[type] }}>
-                        {" "}
-                        {type}
-                      </span>
-                    ))}
-                  </p>
-                  <button onClick={() => deletePokemon(pokemon.id)}>
-                    Delete
-                  </button>
+                <p>
+                  Type:{" "}
+                  {pokemon.type.map((type) => (
+                    <span key={type} style={{ color: typeColors[type] }}>
+                      {" "}
+                      {type}
+                    </span>
+                  ))}
+                </p>
+                <button onClick={() => deletePokemon(pokemon.id)}>
+                  Delete
+                </button>
               </div>
             );
           })}

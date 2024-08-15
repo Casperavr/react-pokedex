@@ -15,36 +15,42 @@ function App() {
   const [pokemonList, setPokemonList] = useState(pokemonData);
   const [filteredPokemonList, setFilteredPokemonList] = useState(pokemonData);
   const [imagePaths, setImagePaths] = useState({});
-  
 
   return (
     <>
-        <NavBar />
-        {/* <AddNewPokemon/> */}
-        <Sidebar />
-          <Routes>
-            <Route path="/" element={<PokemonList 
-              pokemonList={pokemonList} 
-              setPokemonList={setPokemonList} 
-              filteredPokemonList={filteredPokemonList} 
+      <NavBar />
+      {/* <AddNewPokemon/> */}
+      <Sidebar />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <PokemonList
+              pokemonList={pokemonList}
+              setPokemonList={setPokemonList}
+              filteredPokemonList={filteredPokemonList}
               setFilteredPokemonList={setFilteredPokemonList}
-              />} 
             />
+          }
+        />
 
-            <Route path="/about" element={<AboutPage />} />
+        <Route path="/about" element={<AboutPage />} />
 
-            <Route path="/stats/:pokemonId" element={<ItemDetailsPage 
-              pokemonList={pokemonList} 
-              setPokemonList={setPokemonList} 
-              filteredPokemonList={filteredPokemonList} 
+        <Route
+          path="/stats/:pokemonId"
+          element={
+            <ItemDetailsPage
+              pokemonList={pokemonList}
+              setPokemonList={setPokemonList}
+              filteredPokemonList={filteredPokemonList}
               setFilteredPokemonList={setFilteredPokemonList}
-              />} 
             />
-            
-            <Route path="/*" element={<NotFoundPage />} />
+          }
+        />
 
-          </Routes>
-        <Footer />
+        <Route path="/*" element={<NotFoundPage />} />
+      </Routes>
+      <Footer />
     </>
   );
 }

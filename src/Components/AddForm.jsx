@@ -47,10 +47,20 @@ const AddForm = ({ onAdd, nextId }) => {
       return;
     }
 
+    const getRandomStat = () => Math.floor(Math.random() * 131) + 20;
+
     const newPokemon = {
       id: nextId,
       name: { english: name },
       type: selectedTypes,
+      base: {
+        HP: getRandomStat(),
+        Attack: getRandomStat(),
+        Defense: getRandomStat(),
+        SpAttack: getRandomStat(),
+        SpDefense: getRandomStat(),
+        Speed: getRandomStat(),
+      },
     };
 
     onAdd(newPokemon);
