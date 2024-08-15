@@ -131,7 +131,7 @@ body {
   flex-direction: column-reverse;
   height: 20vh;
   display: block;
-  background-color: white;
+  background-color: red;
 }
 
 .addedit-container {
@@ -161,23 +161,22 @@ body {
   color: red
 }
 
-
-.pokemondetails{
+.pokemondetails {
   display: flex;
   flex-direction: column;
 }
 
-.pokemondetails img{
+.pokemondetails img {
   padding: 20px;
   border: 2px solid grey;
   background-color: grey;
 }
 
-.pokemondetails p{
+.pokemondetails p {
   text-align: center;
 }
 
-.pokemon-detail-page{
+.pokemon-detail-page {
   width: 98vw;
   display: flex;
   justify-content: space-around;
@@ -185,20 +184,28 @@ body {
 
 }
 
-.buttons-container{
+.buttons-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.buttons-container *{
+.buttons-container * {
   margin: 10px 0;
 }
 
-.pokemon-details-stats{
+.pokemon-details-stats {
   width: 35vw;
   padding: 0 20px;
 }
 
-
-
+button:hover,
+.gen-buttons button:hover,
+.pokemon-card button:hover,
+.edit-pokemon-button:hover,
+.add-pokemon-button:hover,
+.detail-delete-button:hover,
+.navbar:hover {
+  background-color: white;
+  color: red;
+}
